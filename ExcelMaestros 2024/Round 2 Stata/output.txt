@@ -1,0 +1,542 @@
+
+. cd "C:\Users\Administrator\Desktop\Stata exam"
+C:\Users\Administrator\Desktop\Stata exam
+
+. pwd
+C:\Users\Administrator\Desktop\Stata exam
+
+. use "Data set_BUPFS EXCEL MAESTROS ROUND 2"
+
+. help string
+
+. help f_sting
+
+. recast double case_id
+
+. recast float case_id
+
+. recast string case_id
+case_id:  string invalid
+r(109);
+
+. destring cluster, gen(cl)
+cluster: all characters numeric; cl generated as byte
+
+. drop cluster
+
+. rename cl cluster
+
+. rename V001 gender
+
+. rename V003 age
+
+. rename age income
+
+. rename v002 age
+
+. rename v004 edu
+
+. rename V005 occup
+
+. rename v025 residence
+
+. rename v225 mar_st
+
+. label variable gender "Sex of the respondent"
+
+. label variable age "Age of the respondent"
+
+. label variable income "Monthly income"
+
+. label variable edu "Highest education achieved"
+
+. label variable occup "Current occupation"
+
+. label variable residence "Place of residence"
+
+. label variable mar_st "Ever married status"
+
+. label define gen_label 1 "Female" 2 "Male"
+
+. label value gender gen_label
+
+. br
+
+. ed
+
+. label define occup_label 1 "Agricultue" 2 "Business" 3 "Privat
+> e job" 4 "Government job" 5 "Day laborer"
+
+. label value occup occup_label
+
+. ed
+
+. label define res_label  0 "Urban" 2 "Rural"
+
+. label value residence res_label
+
+. ed
+
+. label define res_label  1 "Urban" 2 "Rural"
+label res_label already defined
+r(110);
+
+. label define res_labell  1 "Urban" 2 "Rural"
+
+. label value residence res_labell
+
+. ed
+
+. label define mr_label 0 "No" 1 "Yes"
+
+. label value mar_st mr_label
+
+. ed
+
+. summarize age income edu, detail
+
+                    Age of the respondent
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%     25.02747       25.00549
+ 5%     25.29695       25.02747
+10%     25.68148       25.09949       Obs                 113
+25%     27.18787       25.17426       Sum of wgt.         113
+
+50%     29.53597                      Mean           29.77941
+                        Largest       Std. dev.      3.057544
+75%     32.53594       34.64049
+90%     34.27671       34.86572       Variance       9.348574
+95%     34.43022       34.92676       Skewness       .1321498
+99%     34.92676       34.95758       Kurtosis        1.75177
+
+                       Monthly income
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%        10163          10066
+ 5%        10519          10163
+10%        11405          10252       Obs                 113
+25%        16131          10306       Sum of wgt.         113
+
+50%        21768                      Mean           21748.99
+                        Largest       Std. dev.      7255.816
+75%        27074          34364
+90%        31853          34648       Variance       5.26e+07
+95%        34007          34703       Skewness       .0294865
+99%        34703          34947       Kurtosis       1.922893
+
+                 Highest education achieved
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            1              0
+10%            2              0       Obs                 113
+25%            6              0       Sum of wgt.         113
+
+50%            9                      Mean           8.548673
+                        Largest       Std. dev.      4.342463
+75%           12             16
+90%           14             16       Variance       18.85698
+95%           16             17       Skewness       -.023112
+99%           17             17       Kurtosis         2.3383
+
+. ed
+
+. gen inc_cat = income
+
+. ed
+
+. replace inc_cat=1 if income < 15000
+(24 real changes made)
+
+. replace inc_cat=2 if 15000 < income < 20000
+(113 real changes made)
+
+. replace inc_cat=1 if income < 15000
+(24 real changes made)
+
+. ed
+
+. replace inc_cat=5 if income < 40000
+(113 real changes made)
+
+. replace inc_cat=4 if income < 30000
+(97 real changes made)
+
+. replace inc_cat=3 if income < 25000
+(69 real changes made)
+
+. replace inc_cat=2 if income < 20000
+(48 real changes made)
+
+. replave inc_cat=1 if income < 15000
+command replave is unrecognized
+r(199);
+
+. replace inc_cat=1 if income < 15000
+(24 real changes made)
+
+. ed
+
+.  gen edu_cat = edu
+
+. replace edu_cat="Secondary pass or above" if edu < 20
+type mismatch
+r(109);
+
+. replace edu_cat=4 if edu < 20
+(106 real changes made)
+
+. 
+. . replace edu_cat=3 if edu <= 7
+(45 real changes made)
+
+. replace edu_cat=2 if edu <= 4
+(22 real changes made)
+
+. replace edu_cat=1 if edu == 0
+(5 real changes made)
+
+. label define educ_label 1 "Uneducated" 2 "Below primary" 3 "Pr
+> imary pass" 4 "Secondary pass or above"
+
+. label value edu_cat educ_label
+
+. ed
+
+. gen age_cat = age
+
+. replace age_cat=1 if age <50
+(113 real changes made)
+
+. replace age_cat=2 if age < 50
+(113 real changes made)
+
+. replace age_cat=1 if age <= 30
+(62 real changes made)
+
+. ed
+
+. label define agec_label 1 "30 years of below" 2 "30 years abov
+> e"
+
+. label value age_cat agec_label
+
+. ed
+
+. 
+. . label define agec_label 1 "30 years of below" 2 "30 years abov
+label agec_label already defined
+r(110);
+
+. 
+. label define agec_labell 1 "30 years or below" 2 "30 years above"
+
+. label value age_cat agec_labell
+
+. label variable inc_cat "Generated Income Category"
+
+. label variable edu_cat "Generated Education Category"
+
+. label variable age_cat "Generated Age Category"
+
+. tab residence
+
+   Place of |
+  residence |      Freq.     Percent        Cum.
+------------+-----------------------------------
+      Urban |         32       28.32       28.32
+      Rural |         81       71.68      100.00
+------------+-----------------------------------
+      Total |        113      100.00
+
+. tab gender
+
+ Sex of the |
+ respondent |      Freq.     Percent        Cum.
+------------+-----------------------------------
+     Female |         62       54.87       54.87
+       Male |         51       45.13      100.00
+------------+-----------------------------------
+      Total |        113      100.00
+
+. tab occup
+
+       Current |
+    occupation |      Freq.     Percent        Cum.
+---------------+-----------------------------------
+    Agricultue |          7        6.19        6.19
+      Business |         44       38.94       45.13
+   Private job |         34       30.09       75.22
+Government job |         20       17.70       92.92
+   Day laborer |          8        7.08      100.00
+---------------+-----------------------------------
+         Total |        113      100.00
+
+. tab inc_cat
+
+  Generated |
+     Income |
+   Category |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          1 |         24       21.24       21.24
+          2 |         24       21.24       42.48
+          3 |         21       18.58       61.06
+          4 |         28       24.78       85.84
+          5 |         16       14.16      100.00
+------------+-----------------------------------
+      Total |        113      100.00
+
+. tab edu_cat
+
+    Generated Education |
+               Category |      Freq.     Percent        Cum.
+------------------------+-----------------------------------
+             Uneducated |          5        4.42        4.42
+          Below primary |         17       15.04       19.47
+           Primary pass |         23       20.35       39.82
+Secondary pass or above |         68       60.18      100.00
+------------------------+-----------------------------------
+                  Total |        113      100.00
+
+. tab edu_cat gender, row col chi2
+
++-------------------+
+| Key               |
+|-------------------|
+|     frequency     |
+|  row percentage   |
+| column percentage |
++-------------------+
+
+  Generated Education | Sex of the respondent
+             Category |    Female       Male |     Total
+----------------------+----------------------+----------
+           Uneducated |         3          2 |         5 
+                      |     60.00      40.00 |    100.00 
+                      |      4.84       3.92 |      4.42 
+----------------------+----------------------+----------
+        Below primary |         8          9 |        17 
+                      |     47.06      52.94 |    100.00 
+                      |     12.90      17.65 |     15.04 
+----------------------+----------------------+----------
+         Primary pass |         9         14 |        23 
+                      |     39.13      60.87 |    100.00 
+                      |     14.52      27.45 |     20.35 
+----------------------+----------------------+----------
+Secondary pass or abo |        42         26 |        68 
+                      |     61.76      38.24 |    100.00 
+                      |     67.74      50.98 |     60.18 
+----------------------+----------------------+----------
+                Total |        62         51 |       113 
+                      |     54.87      45.13 |    100.00 
+                      |    100.00     100.00 |    100.00 
+
+          Pearson chi2(3) =   4.0783   Pr = 0.253
+
+.  tab edu_cat gender, row col chi2
+
++-------------------+
+| Key               |
+|-------------------|
+|     frequency     |
+|  row percentage   |
+| column percentage |
++-------------------+
+
+  Generated Education | Sex of the respondent
+             Category |    Female       Male |     Total
+----------------------+----------------------+----------
+           Uneducated |         3          2 |         5 
+                      |     60.00      40.00 |    100.00 
+                      |      4.84       3.92 |      4.42 
+----------------------+----------------------+----------
+        Below primary |         8          9 |        17 
+                      |     47.06      52.94 |    100.00 
+                      |     12.90      17.65 |     15.04 
+----------------------+----------------------+----------
+         Primary pass |         9         14 |        23 
+                      |     39.13      60.87 |    100.00 
+                      |     14.52      27.45 |     20.35 
+----------------------+----------------------+----------
+Secondary pass or abo |        42         26 |        68 
+                      |     61.76      38.24 |    100.00 
+                      |     67.74      50.98 |     60.18 
+----------------------+----------------------+----------
+                Total |        62         51 |       113 
+                      |     54.87      45.13 |    100.00 
+                      |    100.00     100.00 |    100.00 
+
+          Pearson chi2(3) =   4.0783   Pr = 0.253
+
+. 
+.  tab inc_cat residence , row col chi2
+
++-------------------+
+| Key               |
+|-------------------|
+|     frequency     |
+|  row percentage   |
+| column percentage |
++-------------------+
+
+ Generated |
+    Income |  Place of residence
+  Category |     Urban      Rural |     Total
+-----------+----------------------+----------
+         1 |         7         17 |        24 
+           |     29.17      70.83 |    100.00 
+           |     21.88      20.99 |     21.24 
+-----------+----------------------+----------
+         2 |         7         17 |        24 
+           |     29.17      70.83 |    100.00 
+           |     21.88      20.99 |     21.24 
+-----------+----------------------+----------
+         3 |         8         13 |        21 
+           |     38.10      61.90 |    100.00 
+           |     25.00      16.05 |     18.58 
+-----------+----------------------+----------
+         4 |         8         20 |        28 
+           |     28.57      71.43 |    100.00 
+           |     25.00      24.69 |     24.78 
+-----------+----------------------+----------
+         5 |         2         14 |        16 
+           |     12.50      87.50 |    100.00 
+           |      6.25      17.28 |     14.16 
+-----------+----------------------+----------
+     Total |        32         81 |       113 
+           |     28.32      71.68 |    100.00 
+           |    100.00     100.00 |    100.00 
+
+          Pearson chi2(4) =   2.9790   Pr = 0.561
+
+.  tab inc_cat edu_cat , row col chi2
+
++-------------------+
+| Key               |
+|-------------------|
+|     frequency     |
+|  row percentage   |
+| column percentage |
++-------------------+
+
+ Generated |
+    Income |   Generated Education Category
+  Category | Uneducate  Below pri  Primary p |     Total
+-----------+---------------------------------+----------
+         1 |         2          2          6 |        24 
+           |      8.33       8.33      25.00 |    100.00 
+           |     40.00      11.76      26.09 |     21.24 
+-----------+---------------------------------+----------
+         2 |         1          3          4 |        24 
+           |      4.17      12.50      16.67 |    100.00 
+           |     20.00      17.65      17.39 |     21.24 
+-----------+---------------------------------+----------
+         3 |         1          2          8 |        21 
+           |      4.76       9.52      38.10 |    100.00 
+           |     20.00      11.76      34.78 |     18.58 
+-----------+---------------------------------+----------
+         4 |         0          9          1 |        28 
+           |      0.00      32.14       3.57 |    100.00 
+           |      0.00      52.94       4.35 |     24.78 
+-----------+---------------------------------+----------
+         5 |         1          1          4 |        16 
+           |      6.25       6.25      25.00 |    100.00 
+           |     20.00       5.88      17.39 |     14.16 
+-----------+---------------------------------+----------
+     Total |         5         17         23 |       113 
+           |      4.42      15.04      20.35 |    100.00 
+           |    100.00     100.00     100.00 |    100.00 
+
+
+           | Generated
+ Generated | Education
+    Income |  Category
+  Category | Secondary |     Total
+-----------+-----------+----------
+         1 |        14 |        24 
+           |     58.33 |    100.00 
+           |     20.59 |     21.24 
+-----------+-----------+----------
+         2 |        16 |        24 
+           |     66.67 |    100.00 
+           |     23.53 |     21.24 
+-----------+-----------+----------
+         3 |        10 |        21 
+           |     47.62 |    100.00 
+           |     14.71 |     18.58 
+-----------+-----------+----------
+         4 |        18 |        28 
+           |     64.29 |    100.00 
+           |     26.47 |     24.78 
+-----------+-----------+----------
+         5 |        10 |        16 
+           |     62.50 |    100.00 
+           |     14.71 |     14.16 
+-----------+-----------+----------
+     Total |        68 |       113 
+           |     60.18 |    100.00 
+           |    100.00 |    100.00 
+
+         Pearson chi2(12) =  18.2393   Pr = 0.109
+
+. graph pie gender
+
+. ed
+
+. graph pie residence, over(gender)
+
+. graph export "C:\Users\Administrator\Desktop\Stata exam\Graph.
+> png", as(png) name("Graph")
+file C:\Users\Administrator\Desktop\Stata exam\Graph.png saved
+    as PNG format
+
+. histogram income
+(bin=10, start=10066, width=2488.1)
+
+. graph save "Graph" "C:\Users\Administrator\Desktop\Stata exam\
+> Histogram.gph"
+file C:\Users\Administrator\Desktop\Stata exam\Histogram.gph sav
+> ed
+
+. reg income age edu residence occup
+
+      Source |       SS           df       MS      Number of obs
+>    =       113
+-------------+----------------------------------   F(4, 108)    
+>    =      0.83
+       Model |   175653305         4  43913326.3   Prob > F     
+>    =    0.5095
+    Residual |  5.7208e+09       108  52970324.7   R-squared    
+>    =    0.0298
+-------------+----------------------------------   Adj R-squared
+>    =   -0.0061
+       Total |  5.8964e+09       112  52646860.5   Root MSE     
+>    =    7278.1
+
+----------------------------------------------------------------
+> --------------
+      income | Coefficient  Std. err.      t    P>|t|     [95% c
+> on                                                            
+>   f. interval]
+-------------+--------------------------------------------------
+> --------------
+         age |  -327.3089   232.9013    -1.41   0.163    -788.95
+> 97                                                            
+>       134.3419
+         edu |  -16.01918   159.3633    -0.10   0.920     -331.9
+> 05                                                            
+>       299.8666
+   residence |   2123.722   1572.621     1.35   0.180    -993.48
+> 45                                                            
+>       5240.929
+       occup |  -329.6182   667.5158    -0.49   0.622     -1652.
+> 75                                                            
+>       993.5139
+       _cons |   28911.64   7293.245     3.96   0.000     14455.
+> 17                                                            
+>       43368.12
+----------------------------------------------------------------
+> --------------
+
+. 
